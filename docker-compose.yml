@@ -1,0 +1,13 @@
+services:
+  dev:
+    build: .
+    container_name: process-logger-dev
+    init: true
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    command: sleep infinity
+    tty: true
+    stdin_open: true
