@@ -5,3 +5,4 @@ venv/
 logs/*.db
 logs/*.txt
 .DS_Store
+build/
