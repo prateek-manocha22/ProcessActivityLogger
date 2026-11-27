@@ -1,23 +1,29 @@
-/* Header guard prevents this file from being included more than once. */
+/* Prevent duplicate inclusion of snapshot declarations. */
 #ifndef SNAPSHOT_H
 #define SNAPSHOT_H
 
-/* Group all important information about one running process into a single struct. */
+/* Store the key metrics collected for one running Linux process. */
 typedef struct {
     int pid;
     int ppid;
-    char name[256];
-    char state;                      /* R, S, D, Z, T ... */
-    unsigned long long start_ticks;  /* field 22 of /proc/<pid>/stat */
+    char name[64];
+    char state;
+    char user[32];
+    int priority;
+    int nice;
+    int threads;
+    unsigned long long start_ticks;
+    unsigned long long cpu_ticks;
+    unsigned long rss_kb;
 } Process;
 
-/* Limit how many processes we store at once so memory usage stays predictable. */
+/* Cap the maximum number of processes held in one snapshot array. */
 #define MAX_PROCS 4096
 
-/* Read one process's details from /proc/<pid>/stat; returns 0 on success, -1 on failure. */
-int read_process(int pid, Process *out);     /* 0 = ok, -1 = failed */
+/* Read details for one PID from /proc; returns 0 on success, -1 on failure. */
+int read_process(int pid, Process *out);
 
-/* Scan /proc for all running processes and fill list up to max; returns how many were found. */
-int take_snapshot(Process list[], int max);  /* returns how many were found */
+/* Scan /proc for all running processes into list up to max; returns count. */
+int take_snapshot(Process list[], int max);
 
 #endif

@@ -6,3 +6,4 @@ logs/*.db
 logs/*.txt
 .DS_Store
 build/
+logs/*.csv
